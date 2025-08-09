@@ -16,20 +16,6 @@ CREATE TABLE IF NOT EXISTS high_tier_leagues (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS rated_ladders (
-    id SERIAL PRIMARY KEY,
-    summoner_id VARCHAR(64) NOT NULL,
-    summoner_name VARCHAR(32) NOT NULL,
-    queue VARCHAR(32) NOT NULL,
-    rated_tier VARCHAR(16),
-    rated_rating INTEGER,
-    league_points INTEGER,
-    wins INTEGER,
-    previous_update BIGINT,
-    region VARCHAR(8) NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE IF NOT EXISTS mini_series (
     id SERIAL PRIMARY KEY,
@@ -46,7 +32,4 @@ CREATE INDEX IF NOT EXISTS idx_leagues_league_id ON leagues(league_id);
 CREATE INDEX IF NOT EXISTS idx_leagues_queue_type ON leagues(queue_type);
 CREATE INDEX IF NOT EXISTS idx_high_tier_leagues_tier_region ON high_tier_leagues(tier, region);
 CREATE INDEX IF NOT EXISTS idx_high_tier_leagues_league_id ON high_tier_leagues(league_id);
-CREATE INDEX IF NOT EXISTS idx_rated_ladders_queue_region ON rated_ladders(queue, region);
-CREATE INDEX IF NOT EXISTS idx_rated_ladders_rated_rating ON rated_ladders(rated_rating DESC);
-CREATE INDEX IF NOT EXISTS idx_rated_ladders_summoner_id ON rated_ladders(summoner_id);
 CREATE INDEX IF NOT EXISTS idx_mini_series_summoner_puuid ON mini_series(summoner_puuid);
