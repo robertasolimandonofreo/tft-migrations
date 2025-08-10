@@ -10,6 +10,6 @@ RUN apk add --no-cache wget ca-certificates tar postgresql-client netcat-openbsd
 COPY entrypoint.sh /migrations/entrypoint.sh
 RUN chmod +x /migrations/entrypoint.sh
 
-COPY *.sql /migrations
+COPY *.sql migrations/
 
 ENTRYPOINT ["/migrations/entrypoint.sh"]
