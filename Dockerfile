@@ -12,4 +12,4 @@ RUN chmod +x /migrations/entrypoint.sh
 
 COPY *.sql migrations/
 
-ENTRYPOINT ["/migrations/entrypoint.sh"]
+#ENTRYPOINT ["/migrations/entrypoint.sh"]

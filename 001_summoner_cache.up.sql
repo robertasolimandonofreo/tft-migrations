@@ -8,10 +8,6 @@ CREATE TABLE IF NOT EXISTS summoner_cache (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_summoner_cache_name ON summoner_cache(game_name, tag_line);
-CREATE INDEX IF NOT EXISTS idx_summoner_cache_region ON summoner_cache(region);
-CREATE INDEX IF NOT EXISTS idx_summoner_cache_updated ON summoner_cache(last_updated);
-
 CREATE OR REPLACE FUNCTION update_summoner_cache_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -24,3 +20,17 @@ CREATE TRIGGER trigger_update_summoner_cache_timestamp
     BEFORE UPDATE ON summoner_cache
     FOR EACH ROW
     EXECUTE FUNCTION update_summoner_cache_timestamp();
+
+CREATE INDEX IF NOT EXISTS idx_summoner_cache_name ON summoner_cache(game_name, tag_line);
+CREATE INDEX IF NOT EXISTS idx_summoner_cache_region ON summoner_cache(region);
+CREATE INDEX IF NOT EXISTS idx_summoner_cache_updated ON summoner_cache(last_updated);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_summoner_cache_puuid_region 
+ON summoner_cache(puuid, region);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_summoner_cache_name_tag_region 
+ON summoner_cache(game_name, tag_line, region);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_summoner_cache_active 
+ON summoner_cache(last_updated) 
+WHERE last_updated > NOW() - INTERVAL '30 days';
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_summoner_cache_summoner_id 
+ON summoner_cache(summoner_id) 
+WHERE summoner_id IS NOT NULL;
